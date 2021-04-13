@@ -1,39 +1,17 @@
-var express = require("express");
-var app = express();
-app.listen(8080, () => {
- console.log("Server running on port 3000");
+var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data?symbol=AAPL&region=US"',
+  headers: { 
+    'x-rapidapi-key': 'ca666435e5mshe31babb4e23c614p10c058jsndc5cb266de0b'
+  }
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
 });
-
-app.get("/", (req, res) => {
- res.send(["Hello! This is version 0.6"]);
-});
-
-app.get("/api", (req, res, next) => {
- res.json(["Lorem","Ipsum","Dolor","Sit","Amet"]);
-});
-
-app.get("/fx-static", (req, res, next) => {
- res.json({"sell": "489.181", "timestamp": "2020-06-17 14:42:34.492974", "buy": "389.1"});
-});
-
-app.get("/fx", (req, res, next) => {
- rand1 = Math.floor(Math.random() * 90) + 10;
- rand2 = Math.floor(Math.random() * 90) + 10;
-
- var today = new Date();
- var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
- var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
- var dateTime = date+' '+time;
-
- res.json({"sell": "479." + rand1, "timestamp": dateTime, "buy": "389." + rand2});
-});
-
-app.get("/random", (req, res, next) => {
- res.json([Math.floor(Math.random() * 90) + 10]);
-});
-
-app.get('*',function (req, res) {
-        res.redirect('/');
-    });
-
-// node app.js
